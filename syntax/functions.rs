@@ -3,6 +3,11 @@ fn main() {
     print_sum(5, 6);
     print_number(add_one(2));
     // diverges();
+
+    // let f: fn(i32) -> i32 = add_one;
+    let f = add_one;
+
+    print_sum(f(5), f(6))
 }
 
 fn print_number(x: i32) {
