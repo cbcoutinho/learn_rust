@@ -1,9 +1,18 @@
 from cffi import FFI
 ffi = FFI()
+
 ffi.cdef("""
-    int double(int);
+    typedef struct {
+        double x, y, z;
+    } vector_t;
+    double length(const vector_t *vec);
 """)
 
 C = ffi.dlopen("./ffi/target/debug/libraytracer_ffi.so")
 
-print(C.double(9))
+vector = ffi.new("vector_t *")
+vector.x = 1.0
+vector.y = 1.0
+vector.z = 1.0
+
+print(C.length(vector))
