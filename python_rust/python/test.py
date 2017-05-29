@@ -8,6 +8,7 @@ ffi.cdef("""
     double length(const vector_t *vec);
 """)
 
+# This path is relative to from where the file is being executed.
 C = ffi.dlopen("./ffi/target/debug/libraytracer_ffi.so")
 
 vector = ffi.new("vector_t *")
