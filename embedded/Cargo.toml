@@ -1,0 +1,10 @@
+[package]
+name = "embed"
+version = "0.1.0"
+authors = ["Chris Coutinho <chrisbcoutinho@gmail.com>"]
+
+[dependencies]
+
+[lib]
+name = "embed"
+crate-type = ["dylib"]
