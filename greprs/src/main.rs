@@ -4,7 +4,11 @@ fn main() {
     // Collect command-line args into a vector of strings
     let args: Vec<String> = env::args().collect();
 
-    println!("{:?}", args);
+    let query = &args[1];
+    let filename = &args[2];
 
-    // println!("Hello, world!");
+    println!("Searching for {}", query);
+    println!("In file {}", filename);
+
+
 }
