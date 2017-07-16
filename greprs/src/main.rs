@@ -8,13 +8,13 @@ use greprs::Config;
 
 fn main() {
     // Collect command-line args into a vector of strings
-    let args: Vec<String> = env::args().collect();
+    // let args: Vec<String> = env::args().collect();
     let mut stderr = std::io::stderr();
 
-    let config = Config::new(&args).unwrap_or_else(|err| {
+    let config = Config::new(env::args()).unwrap_or_else(|err| {
         writeln!(
             &mut stderr,
-            "Problems parsing arguments: {}",
+            "Parsing error: {}",
             err
         ).expect("Could not write to stderr");
         process::exit(1)
