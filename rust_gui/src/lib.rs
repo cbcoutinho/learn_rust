@@ -14,7 +14,8 @@ impl Screen {
     }
 }
 
-// An alternate implementation of the Screen struct and its run method using generics and trait bounds
+// An alternate implementation of the Screen struct and its run method using generics and trait
+// bounds
 //
 // pub struct Screen<T: Draw> {
 //     pub components: Vec<T>,
