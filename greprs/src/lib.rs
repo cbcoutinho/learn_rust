@@ -23,7 +23,13 @@ impl Config {
             None => return Err("Didn't get a file name"),
         };
 
-        let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
+        // Default case_sensitive is True, meaning grep is default case sensitive. If the
+        // environmental variable 'CASE_INSENSITIVE' can be parsed to int, it's cast to an int and
+        // compared to 1.
+        let case_sensitive: bool = match env::var("CASE_INSENSITIVE") {
+            Ok(val) => val.parse::<i32>().unwrap() < 1,
+            Err(_) => true,
+        };
 
         Ok(Config {
             query: query,
