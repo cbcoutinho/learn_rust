@@ -56,6 +56,11 @@ impl<T> Drop for List<T> {
     }
 }
 
+// Here we implement three types of iterators:
+// IntoIter - T
+// Iter - &T
+// IterMut - &mut T
+
 pub struct IntoIter<T>(List<T>);
 
 impl<T> List<T> {
