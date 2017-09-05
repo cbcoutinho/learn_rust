@@ -41,10 +41,6 @@ impl List {
     }
 }
 
-// pub trait Drop {
-//     fn drop(&mut self);
-// }
-
 impl Drop for List {
     fn drop(&mut self) {
         let mut cur_link = mem::replace(&mut self.head, Link::Empty);
@@ -61,6 +57,7 @@ impl Drop for List {
 #[cfg(test)]
 mod test {
     use super::List;
+
     #[test]
     fn basics() {
         let mut list = List::new();
