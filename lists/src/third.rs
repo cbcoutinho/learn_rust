@@ -1,12 +1,13 @@
 // in third.rs
 
-use std::rc::Rc;
+// use std::rc::Rc;
+use std::sync::Arc;
 
 pub struct List<T> {
     head: Link<T>,
 }
 
-type Link<T> = Option<Rc<Node<T>>>;
+type Link<T> = Option<Arc<Node<T>>>;
 
 struct Node<T> {
     elem: T,
@@ -19,7 +20,7 @@ impl<T> List<T> {
     }
 
     pub fn append(&self, elem: T) -> List<T> {
-        List { head: Some(Rc::new(Node {
+        List { head: Some(Arc::new(Node {
             elem: elem,
             next: self.head.clone()
         }))}
@@ -55,6 +56,23 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
+// Apparently the following doesn't need nightly anymore (Specifically Rc::try_unwrap)?
+// See this link from the walkthrough: http://cglab.ca/~abeinges/blah/too-many-lists/book/third-drop.html
+
+// Also, I changed Rc (reference count) to Arc (atomic reference count)
+impl<T> Drop for List<T> {
+    fn drop(&mut self) {
+        let mut head = self.head.take();
+        while let Some(node) = head {
+            if let Ok(mut node) = Arc::try_unwrap(node) {
+                head = node.next.take();
+            } else {
+                break;
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::List;
@@ -79,7 +97,6 @@ mod test {
         // Make sure empty tail works
         let list = list.tail();
         assert_eq!(list.head(), None);
-
     }
 
     #[test]
