@@ -1,7 +1,7 @@
 // in third.rs
 
-// use std::rc::Rc;
-use std::sync::Arc;
+// use std::rc::Rc;        // Reference counter
+use std::sync::Arc;     // Atomic reference counter
 
 pub struct List<T> {
     head: Link<T>,
