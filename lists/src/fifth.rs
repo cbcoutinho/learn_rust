@@ -1,7 +1,8 @@
-pub struct List<'a, T: 'a> {
+use std::ptr;
+
+pub struct List<T> {
     head: Link<T>,
-    // tail: Link<T>, // NEW compared to other singlely linked list!
-    tail: Option<&'a mut Node<T>>, // NEW, changed to a plain reference to a node because a tail will always be empty (i.e. tail_link = Some(Box<Node<T>>), where Node<T> = elem and emtpy Link)
+    tail: *mut Node<T>, // DANGER DANGER
 }
 
 type Link<T> = Option<Box<Node<T>>>;
@@ -11,55 +12,53 @@ struct Node<T> {
     next: Link<T>,
 }
 
-impl<'a, T> List<'a, T> {
+impl<T> List<T> {
     pub fn new() -> Self {
-        List { head: None, tail: None }
+        List { head: None, tail: ptr::null_mut() }
     }
 
-    pub fn push(&'a mut self, elem: T) {
-        let new_tail = Box::new(Node {
+    pub fn push(&mut self, elem: T) {
+        let mut new_tail = Box::new(Node {
             elem: elem,
-            // When you push onto the tail, your next is always None
             next: None
         });
 
-        // Put the box in the right place, and then grab a reference to its Node
+        let raw_tail: *mut _ = &mut *new_tail;
 
-        let new_tail = match self.tail.take() {
-            Some(old_tail) => {
-                // If the old tail existed, update it to point to the new tail
-                old_tail.next = Some(new_tail);
-                old_tail.next.as_mut().map(|node| &mut **node)
+        // .is_null checks for null, equivalent to checking for None
+        if !self.tail.is_null() {
+            // If the old tail existed, update it to point to the new tail
+            unsafe {
+                (*self.tail).next = Some(new_tail);
             }
-            None => {
-                // Otherwise, update the head to point to it
-                self.head = Some(new_tail);
-                self.head.as_mut().map(|node| &mut **node)
-            }
-        };
+        } else {
+            // Otherwise, update the head to point to it
+            self.head = Some(new_tail);
+        }
 
-        self.tail = new_tail;
+        self.tail = raw_tail;
     }
 
-    pub fn pop(&'a mut self) -> Option<T> {
-        // Grab the list's current head
-        self.head.take().map(|head| {
-            let head = *head;
-            self.head = head.next;
 
-            // If we're out of `head`, make sure to set the tail to `None`.
-            if self.head.is_none() {
-                self.tail = None;
-            }
-
-            head.elem
-        })
-    }
+    // pub fn pop(&'a mut self) -> Option<T> {
+    //     // Grab the list's current head
+    //     self.head.take().map(|head| {
+    //         let head = *head;
+    //         self.head = head.next;
+    //
+    //         // If we're out of `head`, make sure to set the tail to `None`.
+    //         if self.head.is_none() {
+    //             self.tail = None;
+    //         }
+    //
+    //         head.elem
+    //     })
+    // }
 }
 
 mod test {
     use super::List;
-    
+
     #[test]
     fn basics() {
         let mut list = List::new();
