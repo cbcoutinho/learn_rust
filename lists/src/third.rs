@@ -63,7 +63,8 @@ impl<'a, T> Iterator for Iter<'a, T> {
 }
 
 // Apparently the following doesn't need nightly anymore (Specifically Rc::try_unwrap)?
-// See this link from the walkthrough: http://cglab.ca/~abeinges/blah/too-many-lists/book/third-drop.html
+// See this link from the walkthrough:
+//     http://cglab.ca/~abeinges/blah/too-many-lists/book/third-drop.html
 
 // Also, I changed Rc (reference count) to Arc (atomic reference count)
 impl<T> Drop for List<T> {
