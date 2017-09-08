@@ -1,7 +1,7 @@
 // in third.rs
 
-// use std::rc::Rc;        // Reference counter
-use std::sync::Arc;     // Atomic reference counter
+// use std::rc::Rc; // Reference counter
+use std::sync::Arc; // Atomic reference counter
 
 pub struct List<T> {
     head: Link<T>,
@@ -20,10 +20,12 @@ impl<T> List<T> {
     }
 
     pub fn append(&self, elem: T) -> List<T> {
-        List { head: Some(Arc::new(Node {
-            elem: elem,
-            next: self.head.clone()
-        }))}
+        List {
+            head: Some(Arc::new(Node {
+                elem: elem,
+                next: self.head.clone(),
+            })),
+        }
     }
 
     pub fn head(&self) -> Option<&T> {
@@ -31,7 +33,9 @@ impl<T> List<T> {
     }
 
     pub fn tail(&self) -> List<T> {
-        List { head: self.head.as_ref().and_then(|node| node.next.clone()) }
+        List {
+            head: self.head.as_ref().and_then(|node| node.next.clone()),
+        }
     }
 }
 
@@ -41,7 +45,9 @@ pub struct Iter<'a, T: 'a> {
 
 impl<T> List<T> {
     pub fn iter(&self) -> Iter<T> {
-        Iter { next: self.head.as_ref().map(|node| &**node) }
+        Iter {
+            next: self.head.as_ref().map(|node| &**node),
+        }
     }
 }
 

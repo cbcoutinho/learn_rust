@@ -1,5 +1,5 @@
 use std::rc::Rc;
-use std::cell::{Ref, RefMut, RefCell};
+use std::cell::{Ref, RefCell, RefMut};
 
 pub struct List<T> {
     head: Link<T>,
@@ -28,7 +28,7 @@ impl<T> List<T> {
     pub fn new() -> Self {
         List {
             head: None,
-            tail: None
+            tail: None,
         }
     }
 
@@ -73,9 +73,9 @@ impl<T> List<T> {
     }
 
     pub fn peek_front(&self) -> Option<Ref<T>> {
-        self.head.as_ref().map(|node| {
-            Ref::map(node.borrow(), |node| &node.elem)
-        })
+        self.head
+            .as_ref()
+            .map(|node| Ref::map(node.borrow(), |node| &node.elem))
     }
 
     pub fn push_back(&mut self, elem: T) {
@@ -109,21 +109,21 @@ impl<T> List<T> {
     }
 
     pub fn peek_back(&self) -> Option<Ref<T>> {
-        self.tail.as_ref().map(|node| {
-            Ref::map(node.borrow(), |node| &node.elem)
-        })
+        self.tail
+            .as_ref()
+            .map(|node| Ref::map(node.borrow(), |node| &node.elem))
     }
 
     pub fn peek_back_mut(&mut self) -> Option<RefMut<T>> {
-        self.tail.as_ref().map(|node| {
-            RefMut::map(node.borrow_mut(), |node| &mut node.elem)
-        })
+        self.tail
+            .as_ref()
+            .map(|node| RefMut::map(node.borrow_mut(), |node| &mut node.elem))
     }
 
     pub fn peek_front_mut(&mut self) -> Option<RefMut<T>> {
-        self.head.as_ref().map(|node| {
-            RefMut::map(node.borrow_mut(), |node| &mut node.elem)
-        })
+        self.head
+            .as_ref()
+            .map(|node| RefMut::map(node.borrow_mut(), |node| &mut node.elem))
     }
 }
 
@@ -221,7 +221,9 @@ mod test {
         assert!(list.peek_front_mut().is_none());
         assert!(list.peek_back_mut().is_none());
 
-        list.push_front(1); list.push_front(2); list.push_front(3);
+        list.push_front(1);
+        list.push_front(2);
+        list.push_front(3);
 
         assert_eq!(&*list.peek_front().unwrap(), &3);
         assert_eq!(&mut *list.peek_front_mut().unwrap(), &mut 3);
@@ -232,7 +234,9 @@ mod test {
     #[test]
     fn into_iter() {
         let mut list = List::new();
-        list.push_front(1); list.push_front(2); list.push_front(3);
+        list.push_front(1);
+        list.push_front(2);
+        list.push_front(3);
 
         let mut iter = list.into_iter();
         assert_eq!(iter.next(), Some(3));
