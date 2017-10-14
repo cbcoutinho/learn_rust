@@ -6,7 +6,7 @@ use std::iter::FromIterator;
 
 pub struct Config {
     pub filename_in: String,
-    pub filename_out: String
+    pub filename_out: String,
 }
 
 impl Config {
