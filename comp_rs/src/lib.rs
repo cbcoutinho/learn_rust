@@ -1,7 +1,8 @@
+use std::collections::btree_map::BTreeMap;
 use std::error::Error;
 use std::fs::File;
-// use std::io::prelude::*;
 use std::io::Read;
+use std::iter::FromIterator;
 
 pub struct Config {
     pub filename_in: String,
@@ -37,6 +38,23 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
 
     for line in contents.lines() {
         println!("{}", line);
+    }
+
+    // Put unique occurrences into a BTreeMap
+    let mut count = BTreeMap::new();
+
+    for c in contents.chars() {
+        *count.entry(c).or_insert(0) += 1;
+    }
+
+    // Put contents into a Vec to order by value
+    let mut v = Vec::from_iter(count);
+    v.sort_by(|&(_, a), &(_, b)| b.cmp(&a));
+
+    // Print key-value pair of input file
+    println!("Number of occurrences of each character");
+    for &(key, value) in v.iter() {
+        println!("{}: {}", key, value);
     }
 
     Ok(())

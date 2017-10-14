@@ -1,0 +1,1 @@
+This is a long line to test the comp_rs, the simple compression library. The text in this file should be contained in a single line to avoid line breaks
