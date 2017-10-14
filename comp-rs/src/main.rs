@@ -1,10 +1,10 @@
-extern crate comp_rs;
+extern crate comp;
 
 use std::env;
 use std::process;
 use std::io::prelude::*;
 
-use comp_rs::Config;
+use comp::Config;
 
 fn main() {
     // Collect command-line args into a vector of strings
@@ -18,7 +18,7 @@ fn main() {
     println!("Filename In: {}", config.filename_in);
     println!("Filename Out: {}", config.filename_out);
 
-    if let Err(e) = comp_rs::run(config) {
+    if let Err(e) = comp::run(config) {
         writeln!(&mut stderr, "Application error: {}", e).expect("Could not write to stderr");
         process::exit(1);
     }

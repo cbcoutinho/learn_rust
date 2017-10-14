@@ -1,5 +1,5 @@
 [package]
-name = "comp_rs"
+name = "comp"
 version = "0.1.0"
 authors = ["Chris Coutinho <chrisbcoutinho@gmail.com>"]
 
