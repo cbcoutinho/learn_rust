@@ -17,4 +17,9 @@ fn main() {
 
     println!("Filename In: {}", config.filename_in);
     println!("Filename Out: {}", config.filename_out);
+
+    if let Err(e) = comp_rs::run(config) {
+        writeln!(&mut stderr, "Application error: {}", e).expect("Could not write to stderr");
+        process::exit(1);
+    }
 }
