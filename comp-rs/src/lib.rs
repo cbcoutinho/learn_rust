@@ -43,13 +43,16 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
     // Put unique occurrences into a BTreeMap
     let mut btmap = BTreeMap::new();
 
+    let num_chars = contents.chars().count();
+
+    println!("Total number of chars: {}", num_chars);
     for c in contents.chars() {
         *btmap.entry(c).or_insert(0) += 1;
     }
 
     println!("Number of occurrences of each character");
     for (key, value) in &btmap {
-        println!("{:?}: {:?}", key, value);
+        println!("{:?}: {:?} ({:.2}%)", key, value, 100.0 *(*value as f64)/(num_chars as f64));
     }
 
     // Put contents into a Vec to order by value
@@ -59,7 +62,7 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
     // Print key-value pair of input file
     println!("\nNumber of occurrences of each character, sorted by value");
     for &(key, value) in v.iter() {
-        println!("{:?}: {:?}", key, value);
+        println!("{:?}: {:?} ({:.2}%)", key, value, 100.0 * (value as f64)/(num_chars as f64));
     }
 
     Ok(())
