@@ -47,14 +47,19 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
         *count.entry(c).or_insert(0) += 1;
     }
 
+    println!("Number of occurrences of each character");
+    for (key, value) in &count {
+        println!("{:?}: {:?}", key, value);
+    }
+
     // Put contents into a Vec to order by value
     let mut v = Vec::from_iter(count);
     v.sort_by(|&(_, a), &(_, b)| b.cmp(&a));
 
     // Print key-value pair of input file
-    println!("Number of occurrences of each character");
+    println!("\nNumber of occurrences of each character, sorted by value");
     for &(key, value) in v.iter() {
-        println!("{}: {}", key, value);
+        println!("{:?}: {:?}", key, value);
     }
 
     Ok(())
