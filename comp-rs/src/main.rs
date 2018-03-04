@@ -1,9 +1,11 @@
+// My compression crate
 extern crate comp;
 
 use std::env;
 use std::process;
 use std::io::prelude::*;
 
+// Use the `Config` struct from my compression crate
 use comp::Config;
 
 fn main() {
