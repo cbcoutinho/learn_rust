@@ -1,11 +1,10 @@
-extern crate rand;
-
-mod hello;
+#[derive(Debug)]
+struct Book<'title_valid> {
+    title: &'title_valid str,
+}
 
 fn main() {
-    let name = hello::read_name();
-    //let name2 = name;
-
-    println!("name: {}", name); // <- Move error, name2
-                                //println!("name2: {}", name2);
+    let my_tile: &'static str = "Title of my book";
+    let book = Book { title: &my_tile };
+    println!("{:?}", book);
 }
