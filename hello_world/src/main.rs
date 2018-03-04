@@ -1,5 +1,7 @@
+mod my_mod {
+    pub struct Thing;
+}
+
 fn main() {
-    let mut x = true;
-    x = !x; // false = !true
-    println!("Is it {}?", x);
+    let x = my_mod::Thing;
 }
