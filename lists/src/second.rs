@@ -46,6 +46,34 @@ impl<T> List<T> {
     pub fn peek_mut(&mut self) -> Option<&mut T> {
         self.head.as_mut().map(|node| &mut node.elem)
     }
+
+    // Here are three different functions that turn our `List` into
+    // three types of iterators as follows:
+
+    // IntoIter - T
+    // Iter - &T
+    // IterMut - &mut T
+
+    // Destructive use of `List` using an iterator
+    pub fn into_iter(self) -> IntoIter<T> {
+        IntoIter(self)
+    }
+
+    // *No* lifetime here, List doesn't have any associated lifetimes We
+    // declare a fresh lifetime here for the *exact* borrow that creates
+    // the iter. Now &self needs to be valid as long as the Iter is
+    // around.
+    pub fn iter(&self) -> Iter<T> {
+        Iter {
+            next: self.head.as_ref().map(|node| &**node),
+        }
+    }
+
+    pub fn iter_mut(&mut self) -> IterMut<T> {
+        IterMut {
+            next: self.head.as_mut().map(|node| &mut **node),
+        }
+    }
 }
 
 impl<T> Drop for List<T> {
@@ -62,13 +90,10 @@ impl<T> Drop for List<T> {
 // Iter - &T
 // IterMut - &mut T
 
-pub struct IntoIter<T>(List<T>);
+// The `IntoIter` function is destructive - it takes a vector and uses
+// it up to create an iterator.
 
-impl<T> List<T> {
-    pub fn into_iter(self) -> IntoIter<T> {
-        IntoIter(self)
-    }
-}
+pub struct IntoIter<T>(List<T>);
 
 impl<T> Iterator for IntoIter<T> {
     type Item = T;
@@ -81,18 +106,6 @@ impl<T> Iterator for IntoIter<T> {
 // Iter is generic over *some* lifetime, it doesn't care
 pub struct Iter<'a, T: 'a> {
     next: Option<&'a Node<T>>,
-}
-
-// No lifetime here, List doesn't have any associated lifetimes
-impl<T> List<T> {
-    // We declare a fresh lifetime here for the *exact* borrow that
-    // creates the iter. Now &self needs to be valid as long as the
-    // Iter is around.
-    pub fn iter(&self) -> Iter<T> {
-        Iter {
-            next: self.head.as_ref().map(|node| &**node),
-        }
-    }
 }
 
 // *Do* have a lifetime here, because Iter does have an associated lifetime
@@ -112,14 +125,6 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 pub struct IterMut<'a, T: 'a> {
     next: Option<&'a mut Node<T>>,
-}
-
-impl<T> List<T> {
-    pub fn iter_mut(&mut self) -> IterMut<T> {
-        IterMut {
-            next: self.head.as_mut().map(|node| &mut **node),
-        }
-    }
 }
 
 impl<'a, T> Iterator for IterMut<'a, T> {
