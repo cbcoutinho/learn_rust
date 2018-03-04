@@ -4,9 +4,14 @@ pub struct List<T> {
     head: Link<T>,
 }
 
-// yay type aliases!
+// yay type aliases! This is better than implementing a dumb enum
+// enum Link {
+//     Empty,
+//     More(Box<Node>),
+// }
 type Link<T> = Option<Box<Node<T>>>;
 
+// Make `Node` generic over types instead of just `i32`
 struct Node<T> {
     elem: T,
     next: Link<T>,
