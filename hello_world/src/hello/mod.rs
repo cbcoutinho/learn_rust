@@ -1,10 +1,9 @@
 use std::io::stdin;
 
-pub fn test() {
-    println!("Hello world!");
+mod sub_hello;
 
-    let x = ::rand::random::<u8>();
-    println!("{}", x);
+pub fn test() {
+    sub_hello::test2();
 }
 
 pub fn read_name() -> String {
