@@ -1,4 +1,4 @@
 *.rs.bk
-.rusty-tags.vi
+rusty-tags.vi
 Cargo.lock
 target
