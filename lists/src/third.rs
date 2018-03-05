@@ -37,18 +37,16 @@ impl<T> List<T> {
             head: self.head.as_ref().and_then(|node| node.next.clone()),
         }
     }
-}
 
-pub struct Iter<'a, T: 'a> {
-    next: Option<&'a Node<T>>,
-}
-
-impl<T> List<T> {
     pub fn iter(&self) -> Iter<T> {
         Iter {
             next: self.head.as_ref().map(|node| &**node),
         }
     }
+}
+
+pub struct Iter<'a, T: 'a> {
+    next: Option<&'a Node<T>>,
 }
 
 impl<'a, T> Iterator for Iter<'a, T> {
