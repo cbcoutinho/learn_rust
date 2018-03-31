@@ -2,6 +2,7 @@
 name = "par"
 version = "0.1.0"
 authors = ["Chris Coutinho <chrisbcoutinho@gmail.com>"]
+description = "Text (re)formatter"
 
 [dependencies]
 clap = "2"
