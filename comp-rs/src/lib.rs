@@ -52,7 +52,12 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
 
     println!("Number of occurrences of each character");
     for (key, value) in &btmap {
-        println!("{:?}: {:?} ({:.2}%)", key, value, 100.0 *(*value as f64)/(num_chars as f64));
+        println!(
+            "{:?}: {:?} ({:.2}%)",
+            key,
+            value,
+            100.0 * (*value as f64) / (num_chars as f64)
+        );
     }
 
     // Put contents into a Vec to order by value
@@ -62,7 +67,12 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
     // Print key-value pair of input file
     println!("\nNumber of occurrences of each character, sorted by value");
     for &(key, value) in v.iter() {
-        println!("{:?}: {:?} ({:.2}%)", key, value, 100.0 * (value as f64)/(num_chars as f64));
+        println!(
+            "{:?}: {:?} ({:.2}%)",
+            key,
+            value,
+            100.0 * (value as f64) / (num_chars as f64)
+        );
     }
 
     Ok(())
